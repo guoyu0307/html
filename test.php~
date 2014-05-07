@@ -1,0 +1,10 @@
+<?php
+	if(is_dir("/var/www/html/system/core"))
+	{
+		echo "right";
+	}
+	else
+	{
+		echo "wrong";
+	}
+?>
