@@ -47,7 +47,7 @@
 		{
 			$type = $this->input->post('type');
 
-			$config['upload_path'] = '/Library/WebServer/Documents/html/application/upload/';
+			  $config['upload_path'] = '/Library/WebServer/Documents/html/application/upload/';
   			$config['allowed_types'] = 'xlsx';
   			$config['max_size'] = '10000000';
   			$new_name = time();
@@ -95,6 +95,16 @@
       echo '<script>alert("Upload succeed!")</script>';
 		}
 
+    public function insert_ta($data)
+    {
+      $this->load->model('ta_model');
+      foreach ($data as $key => $value) 
+      {
+        # code...
+        
+      }
+    }
+
     public function export_data()
     {
       date_default_timezone_set('Asia/Shanghai');
@@ -141,6 +151,107 @@
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
         header("Pragma: no-cache"); 
         $obj_Writer->save('php://output'); 
+    }
+
+    public function assignment_match()
+    {
+      $this->load->model('instructor_TA_Pref');
+      $this->load->model('ta_course_pref');
+      $this->load->model('setting');
+      $this->load->model('assignment_model');
+      $this->load->model('instructor_course');
+      $sys_config = $this->setting->getConfig();
+
+      $ins_pref = $this->instructor_TA_Pref->search_all_pref($sys_config['Year'], $sys_config['Term']);
+      $ta_pref = $this->ta_course_pref->search_all_pref($sys_config['Year'], $sys_config['Term']);
+      //var_dump($ins_pref);
+      echo '</br>';
+      //var_dump($ta_pref);
+      //if($ins_pref['11']['4'] == '')  echo 'halle';
+      $upper_ta = 2;
+      $count_ta = array();
+      $count_course = array();
+      $final_result = array();
+      $total = 0;
+
+      foreach ($ta_pref as $key => $value) 
+      {
+        # code...
+        $count_ta[$key] = $upper_ta;
+      }
+
+      foreach ($ins_pref as $key => $value) 
+      {
+        # code...
+        $count_course[$key] = 0;
+        $total++;
+        
+      }
+
+      foreach ($ins_pref as $key => $value) 
+      {
+        # code...
+        foreach ($value as $pref => $ta_id) 
+        {
+          # code...
+          if($count_ta[$ta_id[0]] > 0)
+          {
+            $count_ta[$ta_id[0]]--;
+            $count_course[$key] = 1;
+            $final_result[$key] = $ta_id[0];
+            $total--;
+            break;
+          }
+        }
+        
+      }
+
+      if($total != 0)
+      {
+        foreach ($count_course as $key => $value) 
+        {
+          # code...
+          if($value == 0)
+          {
+            foreach ($count_ta as $key_2 => $value_2) 
+            {
+              # code...
+              if($value_2 > 0)
+              {
+                $count_ta[$key_2]--;
+                $count_course[$key] = 1;
+                $final_result[$key] = $key_2;
+                $total--;
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      //var_dump($final_result);
+      foreach ($final_result as $key => $value) 
+      {
+        # code...
+        $ins_result = $this->instructor_course->search_ins_id($key, $sys_config['Year'], $sys_config['Term']);
+        $ins_id = 0;
+        foreach ($ins_result->result() as $row) 
+        {
+          # code...
+          $ins_id = $row->Instructor_ID;
+        }
+        $info = array('Instructor_ID' => $ins_id,
+                      'Course_ID' => $key,
+                      'Year' => $sys_config['Year'],
+                      'Term' => $sys_config['Term'],
+                      'TA_ID' => $value);
+        if($this->assignment_model->insert_assignment($info))
+        {
+          //echo 'succeed';
+        }
+      }
+
+      
     }
 	}
 

@@ -8,6 +8,13 @@
 
 			$this->load->view('sys_setting', $config);
 		}
+
+		public function alter_release()
+		{
+			$this->load->model('setting');
+			$data = array('Release' => $this->input->post('release'));
+			$this->setting->update_release($data);
+		}
 	}
 
 /*This is the end of this file*/

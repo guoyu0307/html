@@ -6,6 +6,48 @@
 			$this->load->view('ta_registration');
 		}
 		
+		public function new_ta()
+		{
+			$this->load->model('ta_model');
+			$info_array = array('TA_Name' => $this->input->post('name'),
+								'TA_Email' => $this->input->post('email'),
+								'TA_Password' => $this->input->post('password'),
+								'TA_StudentID' => $this->input->post('student_id'),
+								'TA_Enrollment_Year' => $this->input->post('year'),
+								'TA_Enrollment_Term' => $this->input->post('term'),
+								'TA_Program' => $this->input->post('program'),
+								'TA_Advisor' => $this->input->post('advisor'),
+								'TA_Comment' => $this->input->post('comment'));
+			if($this->ta_model->insert_ta($info_array))
+			{
+				header("Location: http://localhost/html/index.php/welcome");
+			}
+		}
+
+		public function add_ta()
+		{
+
+			$this->load->model('ta_model');
+			$info_array = array('TA_Name' => $this->input->post('name'),
+								'TA_Email' => $this->input->post('email'),
+								'TA_Password' => $this->input->post('email'),
+								'TA_StudentID' => $this->input->post('id'),
+								'TA_Enrollment_Year' => $this->input->post('year'),
+								'TA_Enrollment_Term' => $this->input->post('term'),
+								'TA_Program' => $this->input->post('program'),
+								'TA_Advisor' => $this->input->post('advisor'),
+								'TA_Comment' => $this->input->post('comment'));
+			if($this->ta_model->insert_ta($info_array))
+			{
+				header("Location: http://localhost/html/index.php/ta/direct_add_ta");
+			}
+		}
+
+		public function direct_add_ta()
+		{
+			$this->load->view('add_ta');
+		}
+
 		public function background()
 		{
 			$this->load->helper('form');
@@ -157,41 +199,42 @@
 			
 		}
 
-		public function ta_view_course()
+		public function ta_course()
 		{
-			$this->load->library('pagination');
-			$this->load->model('course_offering');
-			$this->load->model('course_entity');
-			$this->load->helper('url');
+			$this->load->model('setting');
+			$sys_config = $this->setting->getConfig();
+			if($sys_config['Release'] == 'yes')
+			{
+				$this->ta_view_result();
+			}
+			else
+			{
+				$this->ta_view_course();
+			}
+		}
 
-			$config['base_url'] = base_url().'index.php/ta/ta_view_course/';
-			$config['total_rows'] = $this->db->count_all('Course_Offering');
-			$config['per_page'] = 10;
-			$config['uri_segment'] = '3';//设为页面的参数，如果不添加这个参数分页用不了 
-			$config['full_tag_open'] = '<p>';
-    		$config['full_tag_close'] = '</p>';
-			$this->pagination->initialize($config); 
+		public function ta_view_result()
+		{
+			$this->load->model('assignment_model');
+			$this->load->model('instructor_model');
+			$this->load->model('course_entity');
+			$this->load->model('setting');
+			$this->load->model('course_offering');
+			$this->load->model('instructor_course');
+
+			$sys_config = $this->setting->getConfig();
 
 			$this->load->library('table');
-    		$this->table->set_heading('Preference', 'Course ID', 'Course Name', 'Year', 'Term', 'Lab Quota', 'Lecture Quota', 'Lab Sections', 'Lecture Sections', 'Comment');
-    		
-    		$results = $this->course_offering->search_all_course_offering($config['per_page'],$this->uri->segment(3));
-    		$all_new= array();
+    		$this->table->set_heading('Course ID', 'Course Name', 'Year', 'Term', 'Instructor');
 
-    		foreach ($results->result() as $row) 
+    		$all_new = array();
+    		$result = $this->assignment_model->search_assignment_ta($sys_config['Year'], $sys_config['Term'], $this->session->userdata['TA_ID']);
+
+    		foreach ($result->result() as $row) 
     		{
+    			# code...
     			$newr = array();
 
-    			$prefer =  '<select name="'.$row->Course_ID.'" style="width:auto" >
-    						<option value="0">---</option>
-                			<option value="1">1</option>
-                			<option value="2"/>2</option>
-                			<option value="3">3</option>
-                			<option value="4"/>4</option>
-                			<option value="5">5</option>
-                			<option value="6"/>6</option>
-            				</select>';
-            	$newr[] = $prefer;
     			$temp = $this->course_entity->search_id($row->Course_ID);
     			$temp_OID = 0;
     			foreach ($temp->result() as $nrow) 
@@ -201,8 +244,89 @@
     				$newr[] = $nrow->Course_Offical_ID;
     				$newr[] = $nrow->Course_Name;
     			}
+    			$newr[] = $sys_config['Year'];
+    			$newr[] = $sys_config['Term'];
+
+    			//Instructor
+    			$ins_result = $this->instructor_course->search_ins_id($row->Course_ID, $row->Year, $row->Term);
+    			if($ins_result->num_rows() < 1)
+    			{
+    				$newr[] = 'Not Decided';
+    			}
+    			else
+    			{
+    				foreach ($ins_result->result() as $kkk) 
+    				{
+    					$result_ins_name = $this->instructor_model->search_instructor($kkk->Instructor_ID);
+    					foreach ($result_ins_name->result() as $key) 
+    					{
+    						$newr[] = $key->Instructor_Name;
+    					}
+    				}
+    			}
+    			
+    			$all_new[] = $newr;
+    		}
+
+    		$data['results'] = $all_new;
+			$this->load->view('ta_view_course', $data);
+		}
+
+		public function ta_view_course()
+		{
+			$this->load->model('course_offering');
+			$this->load->model('course_entity');
+			$this->load->model('setting');
+			$this->load->model('instructor_course');
+			$this->load->model('instructor_model');
+
+			$sys_config = $this->setting->getConfig();
+
+			$this->load->library('table');
+    		$this->table->set_heading('Preference', 'Course ID', 'Course Name', 'Year', 'Term', 'Instructor', 'Lab Quota', 'Lecture Quota', 'Lab Sections', 'Lecture Sections', 'Comment');
+    		
+    		$results = $this->course_offering->search_all_course_offering($sys_config['Year'], $sys_config['Term']);
+    		$all_new= array();
+
+    		foreach ($results->result() as $row) 
+    		{
+    			$newr = array();
+
+    			$temp = $this->course_entity->search_id($row->Course_ID);
+    			$temp_OID = 0;
+    			$temp_name = '';
+    			foreach ($temp->result() as $nrow) 
+    			{
+    				# code...
+    				$temp_OID = $nrow->Course_Offical_ID;
+    				$temp_name = $nrow->Course_Name;
+    			}
+            	$prefer = '<button class="btn btn-primary" id="'.$row->Course_ID.'" name="'.$temp_OID.'" onClick="getInnerHTML(this.id, this.name)">Select</button>';
+
+            	$newr[] = $prefer;
+    			$newr[] = $temp_OID;
+    			$newr[] = $temp_name;
     			$newr[] = $row->Year;
     			$newr[] = $row->Term;
+
+    			//Instructor
+    			$ins_result = $this->instructor_course->search_ins_id($row->Course_ID, $row->Year, $row->Term);
+    			if($ins_result->num_rows() < 1)
+    			{
+    				$newr[] = 'Not Decided';
+    			}
+    			else
+    			{
+    				foreach ($ins_result->result() as $kkk) 
+    				{
+    					$result_ins_name = $this->instructor_model->search_instructor($kkk->Instructor_ID);
+    					foreach ($result_ins_name->result() as $key) 
+    					{
+    						$newr[] = $key->Instructor_Name;
+    					}
+    				}
+    			}
+
     			$newr[] = $row->Lab_Quota_Avg;
     			$newr[] = $row->Lecture_Quota_Avg;
     			$newr[] = $row->Lab_Sections;
@@ -223,46 +347,36 @@
 
 		public function ta_prefer()
 		{
-			//
-			//
-			//
-			//
-			//
-			//
-			//Select the assignment
-			$all_new= array();
-			/*
-    		foreach ($results->result() as $row) 
-    		{
-    			$newr = array();
-    			$temp = $this->course_entity->search_id($row->Course_ID);
-    			$temp_OID = 0;
-    			foreach ($temp->result() as $nrow) 
-    			{
-    				# code...
-    				$temp_OID = $nrow->Course_Offical_ID;
-    				$newr[] = $nrow->Course_Offical_ID;
-    				$newr[] = $nrow->Course_Name;
-    			}
-    			$newr[] = $row->Year;
-    			$newr[] = $row->Term;
-    			$newr[] = $row->Lab_Quota_Avg;
-    			$newr[] = $row->Lecture_Quota_Avg;
-    			$newr[] = $row->Lab_Sections;
-    			$newr[] = $row->Lecture_Sections;
-    			$newr[] = $row->Comment;
-    			//$temp = $row->Course_ID;
-    			//$edit = '<a href="http://localhost/html/index.php/redirect/direct_updata_course/'.$row->Course_ID.'">edit</a>';
-    			//$newr[] = $edit;
+			$ta_id = $this->session->userdata['TA_ID'];
+			$input_array = $this->input->post();
 
+			$this->load->model('setting');
+			$this->load->model('ta_course_pref');
 
-    			$all_new[] = $newr;
-    		}
-			*/
-    		$data['results'] = $all_new;
-			$this->load->library('table');
-    		$this->table->set_heading('Course ID', 'Course Name', 'Year', 'Term', 'Lab Quota', 'Lecture Quota', 'Lab Sections', 'Lecture Sections', 'Comment');
-			$this->load->view('taprefer', $data);
+			$sys_config = $this->setting->getConfig();
+
+			foreach ($input_array as $key => $value) 
+			{
+				if($value == '0')	continue;
+
+				if($this->ta_course_pref->exist($ta_id, $key, $sys_config['Year'], $sys_config['Term']))
+				{
+					//if the ta has selected this course
+					continue;
+				}
+				else
+				{
+					$info = array('TA_ID' => $ta_id,
+								  'Course_ID' => $key,
+								  'Year' => $sys_config['Year'],
+								  'Term' => $sys_config['Term'],
+								  'Preference' => $value);
+					$result = $this->ta_course_pref->insert_ta_course($info);
+				}
+			}
+
+			echo 'succeed';
+	
 		}
 		public function add_prefer()
 		{

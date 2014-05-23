@@ -50,17 +50,16 @@
 <body>
 <div class="container">
 <h2 align="center"><font color="#000000"></font>HKUST Teaching Assistant Management System</h2><br>
-    <form class="form-signin" method="post" action="../index.html">
+<?php
+    $attr = array('class' => 'form-signin');
+    echo form_open('ins/new_instructor', $attr);
+?>
+
        <!-- <h2 class="form-signin-heading">Instructor Registration</h2> -->
-      <table> 
+      <table>
        <tr>
-        <td style="font-size:medium">First Name:</td>
-        <td><input type="text" name="firstname" class="input-block-level" placeholder="First Name" style="width:auto"></td>
-       </tr>
-       
-       <tr>
-         <td style="font-size:medium">Last Name:</td>
-         <td><input type="text" name="lastname" class="input-block-level" placeholder="Last Name" style="width:auto"></td>
+         <td style="font-size:medium">Name:</td>
+         <td><input type="text" name="name" class="input-block-level" placeholder="Name" style="width:auto"></td>
        </tr>
        
        <tr>

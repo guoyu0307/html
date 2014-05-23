@@ -48,9 +48,17 @@
 			return $result;
 		}
 
-		public function search_all_course_offering($num, $offset)
+		public function search_all_course_offering($year, $term)
 		{
-			if($offset == null)	$offset = 0;
+			$sql = "SELECT * FROM Course_Offering WHERE Year = ? AND Term = ?";
+			$query = $this->db->query($sql, array($year, $term));
+    		return $query;
+		}
+
+		public function search_all_course($num, $offset)
+		{
+			//$query = $this->db->get('Course_Information', $num, $offset);
+			if($offset == null)	$offset = 0;   
 			$sql = "SELECT * FROM Course_Offering LIMIT $offset, $num";
 			$query = $this->db->query($sql);
     		return $query;
@@ -62,6 +70,25 @@
 			$this->db->where('Year', $year);
 			$this->db->where('Term', $term);
 			return $this->db->update('Course_Offering', $data);
+		}
+
+		public function search_course_OID($oid)
+		{
+			$this->load->model('course_entity');
+			$result_oid = $this->course_entity->search_course_OID(strtoupper($oid));
+			if($result_oid->num_rows() < 1)
+			{
+				return null;
+			}
+			else
+			{
+				foreach ($result_oid->result() as $row) 
+				{
+					$sql = "SELECT * FROM Course_Offering WHERE Course_ID = ?";
+					$result = $this->db->query($sql, array($row->Course_ID));
+					return $result;
+				}
+			}
 		}
 	}
 /*This is the end of this file*/

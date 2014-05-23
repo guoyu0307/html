@@ -21,9 +21,15 @@
 				$config_result['Year'] = $row->Year;
 				$config_result['Term'] = $row->Term;
 			}
-
 			return $config_result;
 		}
+
+		public function update_release($data)
+		{
+			$this->db->where('ID', 1);
+			$this->db->update('System_Setting', $data);
+		}
+
 	}
 
 /*This is the end of this file*/

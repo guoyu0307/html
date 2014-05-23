@@ -45,16 +45,64 @@
     $this->table->set_template($tmpl);
     echo $this->table->generate($results); 
 ?>
-
-<?php 
-echo '<div class="inline pull-right page">';
-echo $this->pagination->create_links(); 
-echo '</div>';
+<?php
+    echo form_open('ta/ta_prefer');
 ?>
+<table border="1" cellpadding="2" cellspacing="0" class="table table-bordered table-hover definewidth m10">
+    <th>1st Choice</th>
+    <th>1st Choice</th>
+    <th>1st Choice</th>
+    <th>1st Choice</th>
+    <th>1st Choice</th>
+    <th>1st Choice</th>
+    <tr>
+        <td id="choice1"></td>
+        <td id="choice2"></td>
+        <td id="choice3"></td>
+        <td id="choice4"></td>
+        <td id="choice5"></td>
+        <td id="choice6"></td>
+    </tr>
+</table>
 <button type="submit" class="btn btn-primary" type="button" style="margin-left: 1000px;margin-top: 30px;">Save</button>
+</form>
 </body>
 </html>
 <script>
+function getInnerHTML(id, name)
+{
+    if(document.getElementById("choice1").innerHTML == "")
+    {
+        document.getElementById("choice1").innerHTML = name;
+        document.getElementById(id).disabled = true;
+    }
+    else if(document.getElementById("choice2").innerHTML == "")
+    {
+        document.getElementById("choice2").innerHTML = name;
+        document.getElementById(id).disabled = true;
+    }
+    else if(document.getElementById("choice3").innerHTML == "")
+    {
+        document.getElementById("choice3").innerHTML = name;
+        document.getElementById(id).disabled = true;
+    }
+    else if(document.getElementById("choice4").innerHTML == "")
+    {
+        document.getElementById("choice4").innerHTML = name;
+        document.getElementById(id).disabled = true;
+    }
+    else if(document.getElementById("choice5").innerHTML == "")
+    {
+        document.getElementById("choice5").innerHTML = name;
+        document.getElementById(id).disabled = true;
+    }
+    else if(document.getElementById("choice6").innerHTML == "")
+    {
+        document.getElementById("choice6").innerHTML = name;
+        document.getElementById(id).disabled = true;
+    }
+   
+}
     $(function () {
         $(':checkbox[name="group[]"]').click(function () {
             $(':checkbox', $(this).closest('li')).prop('checked', this.checked);

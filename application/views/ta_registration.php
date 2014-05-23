@@ -73,12 +73,15 @@
 <body>
 <div class="container">
 <h2 align="center"><font color="#000000"></font>HKUST Teaching Assistant Management System</h2><br>
-    <form class="form-signin" method="post" action="../index.html" onSubmit="return validate_form(this)">
+<?php
+  $attr = array('class' => 'form-signin');
+  echo form_open('ta/new_ta', $attr);
+?>
         <!--<h2 class="form-signin-heading">TA Registration</h2> -->
       <table>        
        <tr>
          <td style="font-size:medium">Name:</td>
-         <td><input type="text" name="lastname" class="input-block-level" placeholder="Name" style="width:auto"></td>
+         <td><input type="text" name="name" class="input-block-level" placeholder="Name" style="width:auto"></td>
        </tr>
        
        <tr>
@@ -93,7 +96,7 @@
        
        <tr>
          <td style="font-size:medium">Student ID:</td>
-         <td><input type="text" name="id" class="input-block-level" placeholder="ID" style="width:auto"></td>
+         <td><input type="text" name="student_id" class="input-block-level" placeholder="ID" style="width:auto"></td>
        </tr>
        
        <tr>
@@ -119,6 +122,11 @@
        <tr>
          <td style="font-size:medium">Advisor:</td>
          <td><input type="text" name="advisor" class="input-block-level" placeholder="advisor" style="width:auto"></td>
+       </tr>
+
+       <tr>
+         <td style="font-size:medium">Comment:</td>
+         <td><input type="text" name="comment" class="input-block-level" placeholder="comment" style="width:auto"></td>
        </tr>
       </table>
         <!--<input type="text" name="verify" class="input-medium" placeholder="验证码">-->

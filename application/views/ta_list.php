@@ -59,7 +59,7 @@ echo '</div>';
         
 		$('#addnew').click(function(){
 
-				window.location.href="TA_add.html";
+				window.location.href="http://localhost/html/index.php/ta/direct_add_ta";
 		 });
 
 

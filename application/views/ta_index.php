@@ -40,8 +40,9 @@
       var config = [
 	  
 	  {id:'7',homePage : '9',menu:[{text:'TA',
-	  items:[{id:'9',text:'View Offering Course',href:'http://localhost/html/index.php/ta/ta_view_course'},
-	  {id:'10',text:'TA Background',href:'http://localhost/html/index.php/ta/to_tabackground'}]}]}
+	  items:[{id:'9',text:'View Offering Course',href:'http://localhost/html/index.php/ta/ta_course'},
+	  {id:'10',text:'TA Background',href:'http://localhost/html/index.php/ta/to_tabackground'},
+    {id:'11',text:'Evaluation history',href:'http://localhost/html/index.php/ta/to_tabackground'}]}]}
 	  ];
       new PageUtil.MainPage({
         modulesConfig : config

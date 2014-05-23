@@ -101,6 +101,15 @@
     		return $query;
 		}
 
+		//Search the abailable ta in this term
+		public function search_available_ta()
+		{
+			$sql = "SELECT * FROM TA_Information";
+			$result = $this->db->query($sql);
+
+			return $result;
+		}
+
 		public function search_ta_email($email)
 		{
 			$sql = "SELECT * FROM TA_Information WHERE TA_Email = ?";

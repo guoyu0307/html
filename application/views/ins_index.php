@@ -39,7 +39,7 @@
   <script>
     BUI.use('common/main',function(){
       var config = [{id:'1',menu:[{text:'Instructor',
-	  items:[{id:'1',text:'View TA',href:'http://localhost/html/index.php/ins/view_ta'},
+	  items:[{id:'1',text:'Select TA',href:'http://localhost/html/index.php/ins/selection'},
 	  {id:'3',text:'Evaluation',href:'http://localhost/html/index.php/ins/view_evaluation'}]}]}];
       new PageUtil.MainPage({
         modulesConfig : config

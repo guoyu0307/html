@@ -11,6 +11,7 @@
     <script type="text/javascript" src="/html/application/Js/bootstrap.js"></script>
     <script type="text/javascript" src="/html/application/Js/ckform.js"></script>
     <script type="text/javascript" src="/html/application/Js/common.js"></script>
+
     <style type="text/css">
         body {
             padding-bottom: 40px;
@@ -33,25 +34,12 @@
 </head>
 <body>
 
-<form class="form-inline definewidth m20" action="index.html" method="get">  
-    
-    <input type="text" name="rolename" id="rolename"class="abc input-default" placeholder="" value="">&nbsp;&nbsp; 
-    <select name="year" style="width:auto" >
-                <option value="0" selected="selected">Year</option>
-                <option value="1">2013</option>
-                <option value="2"/>2014</option>
-    </select>&nbsp;&nbsp;  
-    <select name="term" style="width:auto" >
-                <option value="0" selected="selected">Term</option>
-                <option value="1">fall</option>
-                <option value="2"/>winter</option>
-                <option value="3">sping</option>
-                <option value="4"/>summer</option>
-    </select>  
-    <button type="submit" class="btn btn-primary">search</button>&nbsp;&nbsp; <button type="button" class="btn btn-success" id="addnew">add</button>
-</form>
+<?php
+echo form_open('ins/add_prefer');
+?>
 
 <?php 
+    echo '<input value="'.$Course_ID.'" id="course_id" name="course_id" hidden></input>';
     $tmpl = array (
                     'table_open' => '<table border="1" cellpadding="2" cellspacing="0" class="table table-bordered table-hover definewidth m10">',
                 );
@@ -60,12 +48,9 @@
     echo $this->table->generate($results); 
 ?>
 
-<?php 
-echo '<div class="inline pull-right page">';
-echo $this->pagination->create_links(); 
-echo '</div>';
-?>
 
+<button type="submit" class="btn btn-primary" type="button" style="margin-left: 1000px;margin-top: 30px;">Save</button>
+</form>
 </body>
 </html>
 <script>
@@ -73,7 +58,7 @@ echo '</div>';
         
 		$('#addnew').click(function(){
 
-				window.location.href="http://localhost/html/index.php/assignment/direct_add_assignment";
+				window.location.href="TA_add.html";
 		 });
 
 
@@ -96,4 +81,4 @@ echo '</div>';
 	
 	
 	}
-</script> 
+</script>

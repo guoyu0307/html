@@ -35,9 +35,24 @@
     </style>
 </head>
 <body>
-<form class="form-inline definewidth m20" action="index.html" method="get">  
+<?php
+    $attr = array('class' => 'form-inline definewidth m20');
+    echo form_open('course_offer/search_course_offering', $attr);
+?>
     
-    <input type="text" name="rolename" id="rolename"class="abc input-default" placeholder="" value="">&nbsp;&nbsp;  
+    <input type="text" name="rolename" id="rolename"class="abc input-default" placeholder="" value="">&nbsp;&nbsp;
+    <select name="year" style="width:auto" >
+                <option value="0" selected="selected">Year</option>
+                <option value="1990">1990</option>
+                <option value="1991"/>1991</option>
+    </select>&nbsp;&nbsp;  
+    <select name="term" style="width:auto" >
+                <option value="0" selected="selected">Term</option>
+                <option value="spring">spring</option>
+                <option value="summer"/>summer</option>
+                <option value="fall">fall</option>
+                <option value="winter"/>winter</option>
+    </select> 
     <button type="submit" class="btn btn-primary">search</button>&nbsp;&nbsp; <button type="button" class="btn btn-success" id="addnew">add</button>
 </form>
 <?php 

@@ -137,7 +137,7 @@
 			$this->load->library('table');
     		$this->table->set_heading('Course ID', 'Course Name', 'Year', 'Term', 'Instructor', 'Lab Quota', 'Lecture Quota', 'Lab Sections', 'Lecture Sections', 'Comment', 'Operation');
     		
-    		$results = $this->course_offering->search_all_course_offering($config['per_page'],$this->uri->segment(3));
+    		$results = $this->course_offering->search_all_course($config['per_page'],$this->uri->segment(3));
     		$all_new= array();
 
     		foreach ($results->result() as $row) 
@@ -156,6 +156,85 @@
     			$newr[] = $row->Term;
 
     			//Instructor
+    			$ins_result = $this->instructor_course->search_ins_id($row->Course_ID, $row->Year, $row->Term);
+    			if($ins_result->num_rows() < 1)
+    			{
+    				$newr[] = 'Not Decided';
+    			}
+    			else
+    			{
+    				foreach ($ins_result->result() as $kkk) 
+    				{
+    					$result_ins_name = $this->instructor_model->search_instructor($kkk->Instructor_ID);
+    					foreach ($result_ins_name->result() as $key) 
+    					{
+    						$newr[] = $key->Instructor_Name;
+    					}
+    				}
+    			}
+
+    			$newr[] = $row->Lab_Quota_Avg;
+    			$newr[] = $row->Lecture_Quota_Avg;
+    			$newr[] = $row->Lab_Sections;
+    			$newr[] = $row->Lecture_Sections;
+    			$newr[] = $row->Comment;
+    			//$temp = $row->Course_ID;
+    			//$edit = '<a href="http://localhost/html/index.php/redirect/direct_updata_course/'.$row->Course_ID.'">edit</a>';
+    			//$newr[] = $edit;
+    			$edit = '<a href="http://localhost/html/index.php/course_offer/direct_update_course_offering/'.$row->Course_ID.'/'.$row->Year.'/'.$row->Term.'/'.$temp_OID.'">edit</a>';
+
+    			$newr[] = $edit;
+
+    			$all_new[] = $newr;
+    		}
+
+    		$data['results'] = $all_new;
+			$this->load->view('course_offering_list', $data);
+		}
+
+		public function search_course_offering()
+		{
+			$this->load->model('course_offering');
+			$this->load->model('course_entity');
+			$this->load->model('instructor_course');
+			$this->load->model('instructor_model');
+
+			$this->load->library('pagination');
+			$name = $this->input->post('rolename');
+			$year = $this->input->post('year');
+			$term = $this->input->post('term');
+
+			$results = array();
+
+			if($name != '')
+			{
+				$results = $this->course_offering->search_course_OID($name);
+			}
+			else
+			{
+				$results = $this->course_offering->search_all_course_offering($year,$term);
+			}
+
+			$this->load->library('table');
+    		$this->table->set_heading('Course ID', 'Course Name', 'Year', 'Term', 'Instructor', 'Lab Quota', 'Lecture Quota', 'Lab Sections', 'Lecture Sections', 'Comment', 'Operation');
+    		
+    		//$results = $this->course_offering->search_all_course_offering($year,$term);
+    		$all_new= array();
+
+    		foreach ($results->result() as $row) 
+    		{
+    			$newr = array();
+    			$temp = $this->course_entity->search_id($row->Course_ID);
+    			$temp_OID = 0;
+    			foreach ($temp->result() as $nrow) 
+    			{
+    				# code...
+    				$temp_OID = $nrow->Course_Offical_ID;
+    				$newr[] = $nrow->Course_Offical_ID;
+    				$newr[] = $nrow->Course_Name;
+    			}
+    			$newr[] = $row->Year;
+    			$newr[] = $row->Term;
     			$ins_result = $this->instructor_course->search_ins_id($row->Course_ID, $row->Year, $row->Term);
     			if($ins_result->num_rows() < 1)
     			{

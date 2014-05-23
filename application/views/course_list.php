@@ -35,7 +35,11 @@
     </style>
 </head>
 <body>
-<form class="form-inline definewidth m20" action="index.html" method="get">  
+
+<?php
+    $attr = array('class' => 'form-inline definewidth m20');
+    echo form_open('course/search_course', $attr);
+?>
     
     <input type="text" name="rolename" id="rolename"class="abc input-default" placeholder="" value="">&nbsp;&nbsp;  
     <button type="submit" class="btn btn-primary">search</button>&nbsp;&nbsp; <button type="button" class="btn btn-success" id="addnew">add</button>

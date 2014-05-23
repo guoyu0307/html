@@ -33,7 +33,7 @@
 </head>
 
 <table class="table table-bordered table-hover definewidth m10">
-<?php echo form_open_multipart('data_file/get_file'); ?>
+<?php echo form_open_multipart('data_file/assignment_match'); ?>
      <tr>
         <input type="hidden" name="type" value="course" />
         <td width="30%" class="tableleft">Generate the assignment result</td>
@@ -41,7 +41,7 @@
     </tr>
 </form>
 <?php
-echo form_open_multipart('data_file/get_file'); 
+echo form_open_multipart('system_setting/alter_release'); 
 ?>
      <tr>
         <input type="hidden" name="type" value="course_offering" />

@@ -166,4 +166,9 @@
     		$data['results'] = $all_new;
     		$this->load->view('assignment_list', $data);
 		}
+
+		public function matching_alg()
+		{
+			
+		}
 	}

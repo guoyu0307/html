@@ -35,6 +35,13 @@
 <body>
 
 
+<div style="margin-bottom:-20px;margin-left: 22px;">
+    <?php
+    echo "<h4>Course Name: $Course_Name&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspCourse ID: $Course_OID</h1>";
+    echo "<h4></h1>";
+    ?>
+</div>
+
 <?php
 $attributes = array('class' => 'form-inline definewidth m20');
 echo form_open('ins/search_ta', $attributes);
@@ -76,10 +83,9 @@ echo form_open('ins/search_ta', $attributes);
     </select>
     <button type="submit" class="btn btn-primary">search</button>&nbsp;&nbsp; 
 </form>
-<?php
-echo form_open('ins/add_prefer');
-?>
+
 <?php 
+    echo '<input value="'.$Course_ID.'" id="course_id" name="course_id" hidden></input>';
     $tmpl = array (
                     'table_open' => '<table border="1" cellpadding="2" cellspacing="0" class="table table-bordered table-hover definewidth m10">',
                 );
@@ -88,16 +94,88 @@ echo form_open('ins/add_prefer');
     echo $this->table->generate($results); 
 ?>
 
-<?php 
-echo '<div class="inline pull-right page">';
-echo $this->pagination->create_links(); 
-echo '</div>';
+<?php
+echo form_open('ins/add_prefer');
 ?>
-<button type="submit" class="btn btn-primary" type="button" style="margin-left: 1000px;margin-top: 30px;">Save</button>
+<table border="1" cellpadding="2" cellspacing="0" class="table table-bordered table-hover definewidth m10">
+    <th>1st Choice</th>
+    <th>1st Choice</th>
+    <th>1st Choice</th>
+    <th>1st Choice</th>
+    <th>1st Choice</th>
+    <th>1st Choice</th>
+    <tr>
+        <td id="choice1"></td>
+        <td id="choice2"></td>
+        <td id="choice3"></td>
+        <td id="choice4"></td>
+        <td id="choice5"></td>
+        <td id="choice6"></td>
+    </tr>
+</table>
+</form>
+<div style="margin-top: 30px;margin-left: 900px;">
+
+    <button type="submit" class="btn btn-primary" type="button" style="">Save</button>
+</div>
+
+
+
 </form>
 </body>
 </html>
 <script>
+var store = new array();
+//var window.count = 12;
+//var count = 0;
+var count = 0;
+function getInnerHTML(id, name)
+{
+    if(document.getElementById("choice1").innerHTML == "")
+    {
+        document.getElementById("choice1").innerHTML = name;
+        document.getElementById(id).disabled = true;
+    }
+    else if(document.getElementById("choice2").innerHTML == "")
+    {
+        document.getElementById("choice2").innerHTML = name;
+        document.getElementById(id).disabled = true;
+    }
+    else if(document.getElementById("choice3").innerHTML == "")
+    {
+        document.getElementById("choice3").innerHTML = name;
+        document.getElementById(id).disabled = true;
+    }
+    else if(document.getElementById("choice4").innerHTML == "")
+    {
+        document.getElementById("choice4").innerHTML = name;
+        document.getElementById(id).disabled = true;
+    }
+    else if(document.getElementById("choice5").innerHTML == "")
+    {
+        document.getElementById("choice5").innerHTML = name;
+        document.getElementById(id).disabled = true;
+    }
+    else if(document.getElementById("choice6").innerHTML == "")
+    {
+        document.getElementById("choice6").innerHTML = name;
+        document.getElementById(id).disabled = true;
+    }
+   
+}
+
+function clearall()
+{
+    document.getElementById("choice1").innerHTML = "";
+    document.getElementById("choice2").innerHTML = "";
+    document.getElementById("choice3").innerHTML = "";
+    document.getElementById("choice4").innerHTML = "";
+    document.getElementById("choice5").innerHTML = "";
+    document.getElementById("choice6").innerHTML = "";
+
+    document.getElementById(id).disabled = true;
+}
+
     $(function () {
         
 		$('#addnew').click(function(){

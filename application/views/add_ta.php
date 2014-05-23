@@ -31,7 +31,10 @@
 
     </style>
 </head>
-<form action="index.html" method="post">
+<?php
+    echo form_open('ta/add_ta');
+?>
+
 <table class="table table-bordered table-hover definewidth m10">
      <tr>
         <td width="10%" class="tableleft">Name</td>
@@ -50,25 +53,22 @@
         <td><input type="text" name="program"></td>
     </tr>
     <tr>
-        <td class="tableleft">Enrollment</td>
-        <td><input type="text" name="enrollment"></td>
+        <td class="tableleft">Enrollment Year</td>
+        <td><input type="text" name="year"></td>
+    </tr>
+     <tr>
+        <td class="tableleft">Enrollment Term</td>
+        <td><input type="text" name="term"></td>
     </tr>
     <tr>
         <td class="tableleft">Advisor</td>
         <td><input type="text" name="advisor"></td>
     </tr>
     <tr>
-        <td class="tableleft">TA history</td>
-        <td><input type="text" name="history"></td>
-    </tr>
-    <tr>
         <td class="tableleft">Comment</td>
-        <td><input type="text" name="advisor"></td>
+        <td><input type="text" name="comment"></td>
     </tr>
-    <tr>
-        <td class="tableleft">Automatically upload</td>
-        <td><input name="" type="button" value="select file from computer"></td>
-    </tr>
+
     <tr>
         <td class="tableleft"></td>
         <td>

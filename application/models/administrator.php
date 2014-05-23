@@ -9,6 +9,7 @@
 			$this->load->database();
 		}
 
+		//Insert new administrator
 		public function insert_admin($info_array)
 		{
 			$ad_account = $this->db->escape($info_array['Account']);
@@ -22,6 +23,7 @@
 			return $this->db->query($sql);
 		}
 
+		//administrator login
 		public function userlogin($account, $password)
 		{
 			$sql = "SELECT * FROM Administrator_Info WHERE Account = ?";

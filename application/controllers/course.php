@@ -109,6 +109,35 @@
     		$this->load->view('course_list', $data);
 		}
 
+		public function search_course()
+		{
+			$this->load->library('pagination');
+			$this->load->model('course_entity');
+			$id = $this->input->post('rolename');
+			$this->load->library('table');
+    		$this->table->set_heading('ID', 'Used ID', 'Name', 'Credit', 'Comment', 'Operation');
+    		
+    		$results = $this->course_entity->search_course_OID(strtoupper($id));
+    		$all_new= array();
+
+    		foreach ($results->result() as $row) 
+    		{
+    			$newr = array();
+    			$newr[] = $row->Course_Offical_ID;
+    			$newr[] = $row->Course_Used_ID;
+    			$newr[] = $row->Course_Name;
+    			$newr[] = $row->Credits;
+    			$newr[] = $row->Comment;
+    			//$temp = $row->Course_ID;
+    			$edit = '<a href="http://localhost/html/index.php/course/direct_updata_course/'.$row->Course_ID.'">edit</a>';
+    			$newr[] = $edit;
+    			$all_new[] = $newr;
+    		}
+
+    		$data['results'] = $all_new;
+    		$this->load->view('course_list', $data);
+		}
+
 		public function direct_updata_course($course_id)
 		{
 			$this->load->model('course_entity');

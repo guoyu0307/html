@@ -72,8 +72,8 @@
         <!--<h3 class="form-signin-heading">Login to Continue</h2> -->
         <table>
           <tr>
-             <td style="font-size:medium">Username:</td>
-             <td><input type="text" name="username" class="input-block-level" placeholder="Username"></td>
+             <td style="font-size:medium">Account:</td>
+             <td><input type="text" name="username" class="input-block-level" placeholder="Account"></td>
           </tr>
           <tr>
              <td style="font-size:medium">Password:</td>

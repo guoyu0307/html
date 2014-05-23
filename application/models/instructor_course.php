@@ -36,5 +36,27 @@
 			return $result;
 		}
 
+		public function search_course($ins_id, $year, $term)
+		{
+			$sql = "SELECT * FROM Instructor_Course WHERE Instructor_ID = ? AND Year = ? AND Term = ?";
+			$result = $this->db->query($sql, array($ins_id, $year, $term));
+			$ids = array();
+			if($result->num_rows() > 0)
+			{
+				foreach ($result->result() as $row) 
+				{
+					# code...
+					$ids[] = $row->Course_ID;
+				}
+
+				return $ids;
+
+			}
+			else
+			{
+				return null;
+			}
+		}
+
 	}
 /*This is the end of this file*/

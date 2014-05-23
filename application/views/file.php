@@ -31,8 +31,24 @@
 
     </style>
 </head>
-<?php echo form_open_multipart('data_file/get_file'); ?>
+
 <table class="table table-bordered table-hover definewidth m10">
+<?php echo form_open_multipart('data_file/get_file'); ?>
+     <tr>
+        <input type="hidden" name="type" value="ta" />
+        <td width="30%" class="tableleft">Upload ta Information</td>
+        <td><input name="userfile" type="file" size="20"></td>
+        <td><button type="submit" class="btn btn-primary" type="button" style="margin-right: 400px;">Submit</button></td>
+    </tr>
+</form>
+<?php echo form_open_multipart('data_file/get_file'); ?>
+     <tr>
+        <input type="hidden" name="type" value="instructor" />
+        <td width="30%" class="tableleft">Upload instructor Information</td>
+        <td><input name="userfile" type="file" size="20"></td>
+        <td><button type="submit" class="btn btn-primary" type="button" style="margin-right: 400px;">Submit</button></td>
+    </tr>
+</form>
 <?php echo form_open_multipart('data_file/get_file'); ?>
      <tr>
         <input type="hidden" name="type" value="course" />
@@ -54,10 +70,6 @@
         <td ><a href="http://localhost/html/index.php/data_file/export_data">Export</a></td>
     </tr>
     <tr>
-        <td class="tableleft">Export the Offering Course Information</td>
-        <td ><a href="">Export</a></td>
-    </tr>
-    <tr>
         <td class="tableleft">Export the TA Information</td>
         <td ><a href="">Export</a></td>
     </tr>
@@ -66,12 +78,74 @@
         <td ><a href="">Export</a></td>
     </tr>
     <tr>
+        <?php
+            echo form_open('');
+        ?>
+        <td class="tableleft">Export the Offering Course Information</td>
+        <td>From: <select name="from_year" style="width:auto" >
+                    <option value="0" selected="selected">Year</option>
+                    <option value="1990">1990</option>
+                    <option value="1991"/>1991</option>
+                  </select>&nbsp;&nbsp;  
+                  <select name="from_term" style="width:auto" >
+                    <option value="0" selected="selected">Term</option>
+                    <option value="spring">spring</option>
+                    <option value="summer"/>summer</option>
+                    <option value="fall">fall</option>
+                    <option value="winter"/>winter</option>
+                  </select>  </br>
+            To: <select name="from_year" style="width:auto" >
+                    <option value="0" selected="selected">Year</option>
+                    <option value="1990">1990</option>
+                    <option value="1991"/>1991</option>
+                </select>&nbsp;&nbsp;  
+                <select name="from_term" style="width:auto" >
+                    <option value="0" selected="selected">Term</option>
+                    <option value="spring">spring</option>
+                    <option value="summer"/>summer</option>
+                    <option value="fall">fall</option>
+                    <option value="winter"/>winter</option>
+                </select>  
+        </td>
+        <td><button type="submit" class="btn btn-primary" type="button" style="margin-right: 400px;">Export</button></td>
+    </tr>
+    
+    <tr>
+        <?php
+            echo form_open('');
+        ?>
         <td class="tableleft">Export the Assignment Information</td>
-        <td ><a href="">Export</a></td>
+        <td>From: <select name="from_year" style="width:auto" >
+                    <option value="0" selected="selected">Year</option>
+                    <option value="1990">1990</option>
+                    <option value="1991"/>1991</option>
+                  </select>&nbsp;&nbsp;  
+                  <select name="from_term" style="width:auto" >
+                    <option value="0" selected="selected">Term</option>
+                    <option value="spring">spring</option>
+                    <option value="summer"/>summer</option>
+                    <option value="fall">fall</option>
+                    <option value="winter"/>winter</option>
+                  </select>  </br>
+            To: <select name="from_year" style="width:auto" >
+                    <option value="0" selected="selected">Year</option>
+                    <option value="1990">1990</option>
+                    <option value="1991"/>1991</option>
+                </select>&nbsp;&nbsp;  
+                <select name="from_term" style="width:auto" >
+                    <option value="0" selected="selected">Term</option>
+                    <option value="spring">spring</option>
+                    <option value="summer"/>summer</option>
+                    <option value="fall">fall</option>
+                    <option value="winter"/>winter</option>
+                </select>  
+        </td>
+        <td><button type="submit" class="btn btn-primary" type="button" style="margin-right: 400px;">Export</button></td>
+    </form>
     </tr>  
 
 </table>
-</form>
+
 </body>
 </html>
 <script>
